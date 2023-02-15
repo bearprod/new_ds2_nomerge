@@ -29,7 +29,7 @@ int main(int argc,  char **argv)
     duration<double, nano> hash2_add;
     duration<double, nano> hash2_search;
 
-    regex regex("[A-Za-z-]+");
+    regex regex("[A-Za-z-]+"); // regex tp search for words and include hyphen
 
     string dict_file_name = argv[1];
 
@@ -103,6 +103,7 @@ int main(int argc,  char **argv)
 
             int reg_test;
         
+            // regex iterator that iterates from beginning to end of line and searches for words, assigns each result to smatch object, use str() to return string
             for (sregex_iterator iter(reg_line.begin(), reg_line.end(), regex); iter != sregex_iterator(); ++iter){
                     
                     result = *iter;
@@ -124,6 +125,8 @@ int main(int argc,  char **argv)
     cout << "number of misspelled words for hash1: " << first_hash.misspelled_count << endl;
     
     }
+
+
 
      // now we start second hash, which is quad probe 
 
