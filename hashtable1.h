@@ -45,7 +45,6 @@ class node_buck{
 
         tail = cur_node;
 
-        // cout << "adedd " << key_to_add << endl;
 
         return;
 
@@ -151,11 +150,9 @@ class hashtable1{
                     
                     // cout << "about to search for " << lower_key << " at index " << hash_of_key << endl;
                     if(hash_array[hash_of_key].search(lower_key)){
-                        cout << "found:" << lower_key << endl;
                         return;
                     }
                     else{
-                        cout << "did not find:" << lower_key << endl;
                         misspelled_count = misspelled_count + 1;
                         return;
                     }

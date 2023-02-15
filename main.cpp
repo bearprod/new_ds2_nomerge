@@ -23,11 +23,15 @@ using namespace std::chrono;
 int main(int argc,  char **argv)
 {
 
-    regex regex("[A-Za-z-]+");
-    
-    bool main_check = false;
+    duration<double, nano> hash1_add;
+    duration<double, nano> hash1_search;
 
-    string dict_file_name = "dictionaryFile2.txt";
+    duration<double, nano> hash2_add;
+    duration<double, nano> hash2_search;
+
+    regex regex("[A-Za-z-]+");
+
+    string dict_file_name = argv[1];
 
     ifstream dict_file;
 
@@ -45,16 +49,15 @@ int main(int argc,  char **argv)
 
     dict_file.close();
 
-
-    if(main_check){
-        cout << "from main call, init hash table with size param:" << count_of_dict_words << endl;
-    }
+    hashtable1 first_hash(count_of_dict_words);
 
     hashtable2 second_hash(count_of_dict_words);
 
     string dict_line;
 
     int dict_test;
+
+    auto hash1_add_start = steady_clock::now();
 
     dict_file.open(dict_file_name);
     if(!dict_file.eof()){
@@ -68,35 +71,25 @@ int main(int argc,  char **argv)
             
                     dict_result = *iter;
 
-                    // cout << dict_result.str() << endl;
-
-                    second_hash.add_key(dict_result.str());  
-
-                    // cout << second_hash.hash_func(dict_result.str()) << endl;
+                    first_hash.add_key(dict_result.str());  
 
             }
 
         }
     }
-
-    cout << "ended foor loops" << endl;
   
     dict_file.close();
 
+    auto hash1_add_stop = steady_clock::now();
 
-   // second_hash.print_index(5);
+    hash1_add = hash1_add_stop - hash1_add_start; 
+
     
-
-
-    if(main_check){
-        cout << "hashed hash table:" << endl;
-    }
-
-
-    string input_file_name = "inputFile2.txt";
-
+    string input_file_name = argv[2];
 
     ifstream input_file;
+
+    auto hash1_search_start = steady_clock::now();
 
     input_file.open(input_file_name);
 
@@ -104,7 +97,6 @@ int main(int argc,  char **argv)
     {
         string reg_line;
 
-        // cout << "about to read in input file shit" << endl;
         while(getline(input_file, reg_line)){
 
             smatch result;
@@ -115,7 +107,71 @@ int main(int argc,  char **argv)
                     
                     result = *iter;
 
-                    // cout << "last word before seg fault" << result.str() << endl;
+                    first_hash.search(result.str());
+
+            }
+        }
+    input_file.close();
+
+    auto hash1_search_stop = steady_clock::now();
+    
+    hash1_search = hash1_search_stop - hash1_search_start; 
+
+    cout << "time for hash1 add " << hash1_add.count() << " nanoseconds"  << endl;
+
+    cout << "time for hash1 search " << hash1_search.count()<< " nanoseconds"  << endl;
+
+    cout << "number of misspelled words for hash1: " << first_hash.misspelled_count << endl;
+    
+    }
+
+     // now we start second hash, which is quad probe 
+
+    auto hash2_add_start = steady_clock::now();
+
+    dict_file.open(dict_file_name);
+    if(!dict_file.eof()){
+
+        while(getline(dict_file, dict_line)){
+
+            smatch dict_result;
+            
+            for (sregex_iterator iter(dict_line.begin(), dict_line.end(), regex); iter != sregex_iterator(); ++iter){
+                    
+            
+                    dict_result = *iter;
+
+                    second_hash.add_key(dict_result.str());  
+
+            }
+
+        }
+    }
+
+    dict_file.close();
+
+    auto hash2_add_stop = steady_clock::now();
+
+    hash2_add = hash2_add_stop - hash2_add_start; 
+
+
+    auto hash2_search_start = steady_clock::now();
+
+    input_file.open(input_file_name);
+
+    if(!input_file.eof())
+    {
+        string reg_line;
+
+        while(getline(input_file, reg_line)){
+
+            smatch result;
+
+            int reg_test;
+        
+            for (sregex_iterator iter(reg_line.begin(), reg_line.end(), regex); iter != sregex_iterator(); ++iter){
+                    
+                    result = *iter;
 
                     second_hash.search(result.str());
 
@@ -123,10 +179,21 @@ int main(int argc,  char **argv)
         }
     input_file.close();
 
-    cout << "size of hash " << second_hash.size_total << endl;
-    cout << "numer of misspelled words: " << second_hash.misspelled_count << endl;
+    auto hash2_search_stop = steady_clock::now();
+    
+    hash2_search = hash2_search_stop - hash2_search_start; 
+
+    cout << "time for hash2 add " << hash2_add.count() << " nanoseconds" << endl;
+
+    cout << "time for hash2 search " << hash2_search.count() << " nanoseconds" << endl;
+
+    cout << "number of misspelled words for hash2: " << second_hash.misspelled_count << endl;
     
     }
+
+
+
+
     return 1;
 }
 

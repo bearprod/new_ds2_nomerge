@@ -27,25 +27,17 @@ class hashtable2{
         if(isPrime(size_total) == true){
             hash_array = new string[size_total];
             
-            if(check_mode){
-                cout << "initial size fond to be prime, init array of size:" << size_total << endl;
-            }
         }
         else{
             size_total = findnextPrime(size_total);
 
             hash_array = new string[size_total];
             
-            if(check_mode){
-                cout << "found next prime number, init array of size:" << size_total << endl;
-            }
+        
         }
 
         for(int i = 0; i < size_total; i++){
             hash_array[i] = "null";
-        }
-        if(check_mode){
-            cout << "init hash array of size size:" << size_total << endl;
         }
     }
 
@@ -120,8 +112,7 @@ class hashtable2{
 
     }
 
-    // search for string - this is spell check, if cant find, add to array of misspeled, loading
-    // maybe bool, idk, or return of soemthign def, add to misspelled cout
+    
     void search(string search_key){
         int hash_of_key;
 
@@ -134,12 +125,12 @@ class hashtable2{
             hash_of_key = hash_func(lower_key);
 
             if(search_for_hash_key_pair(lower_key, hash_of_key)){
-                // cout << "found:" << lower_key << endl;
+                
                 return;
             }
             else{
                 misspelled_count = misspelled_count + 1;
-                // cout << "did not find: " << lower_key << endl;
+    
                 return;
             }
         }
