@@ -103,29 +103,21 @@ class hashtable2{
             throw out_of_range("in insert key call, hash func index out of bounds");
         }
     }
-   
-    int quad_probe(int last_index_checked){
-        int cur_ind = last_index_checked;
-        int room;
-        int ind_to_start;
-        int search_index_step;
-        int last_index = size_total - 1;
-        for(int i = 1; i * i < size_total; i++){
-            search_index_step = i * i;
-            if(cur_ind + i > last_index){
-                room = last_index - cur_ind;
-                ind_to_start = search_index_step - room - 1;
-                cur_ind = ind_to_start;
+
+    int quad_probe(int last_index){
+        int init_ind = last_index;
+        int check_ind;
+        int quad_fact;
+        for(int i = 1; i*i < size_total; i++){
+            quad_fact = i*i;
+            check_ind = (init_ind + quad_fact) % size_total;
+            if(hash_array[check_ind] == "null"){
+                return check_ind; 
             }
-            else{
-                cur_ind = cur_ind + search_index_step;
-            }
-            if(hash_array[cur_ind] == "null"){
-                return cur_ind; 
-            }
-          
+
         }
         return -1;
+
     }
 
     // search for string - this is spell check, if cant find, add to array of misspeled, loading
@@ -186,29 +178,23 @@ class hashtable2{
         }
     }
 
-    bool quad_search(string key, int last_ind){
-        int cur_ind = last_ind;
-        int room;
-        int ind_to_start;
-        int search_index_step;
-        int last_index = size_total - 1;
-        for(int i = 1; i * i < size_total; i++){
-            search_index_step = i * i;
-            if(cur_ind + search_index_step > last_index){
-                room = last_index - cur_ind;
-                ind_to_start = search_index_step - room - 1;
-                cur_ind = ind_to_start;
-            }
-            else{
-                cur_ind = cur_ind + search_index_step;
-            }
-            if(hash_array[cur_ind] == key){
+
+    int quad_search(string key, int last_ind){
+        int init_ind = last_ind;
+        int check_ind;
+        int quad_fact;
+        for(int i = 1; i*i < size_total; i++){
+            quad_fact = i*i;
+            check_ind = (init_ind + quad_fact) % size_total;
+            if(hash_array[check_ind] == key){
                 return true; 
             }
-          
+
         }
         return false;
+
     }
+    
 
 
     bool isPrime(int number){

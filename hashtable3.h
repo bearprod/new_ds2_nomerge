@@ -80,7 +80,7 @@ class hashtable3{
 
         for (char ch: key){
             ch = tolower(ch);
-            hash_val = 2129 * hash_val + ch;
+            hash_val = 37 * hash_val + ch;
         }
 
         return hash_val % size_total;
@@ -151,7 +151,7 @@ class hashtable3{
 
         for (char ch: key_to_hash){
             ch = tolower(ch);
-            hash_val = 2129 * hash_val + ch;  // these 3 functions could def be wrong
+            hash_val = 37 * hash_val + ch;  // these 3 functions could def be wrong
         }
 
         return hash_cof - (hash_val % hash_cof);

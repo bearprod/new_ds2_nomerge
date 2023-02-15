@@ -14,7 +14,10 @@
 using namespace std;
 using namespace std::chrono;
 
-     
+// for each hash
+// print time to construct
+// print time to search
+// print number of misspelled words
 
 
 int main(int argc,  char **argv)
@@ -47,7 +50,7 @@ int main(int argc,  char **argv)
         cout << "from main call, init hash table with size param:" << count_of_dict_words << endl;
     }
 
-    hashtable1 second_hash(count_of_dict_words);
+    hashtable2 second_hash(count_of_dict_words);
 
     string dict_line;
 
