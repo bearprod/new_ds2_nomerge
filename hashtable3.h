@@ -75,11 +75,10 @@ class hashtable3{
 
     }
 
-    int hash_func(string key){
+    unsigned int hash_func(string key){
         unsigned int hash_val = 0;
 
         for (char ch: key){
-            ch = tolower(ch);
             hash_val = 37 * hash_val + ch;
         }
 
@@ -99,7 +98,7 @@ class hashtable3{
             else{
 
                 int second_hash_result;
-                second_hash_result = find_open_second(hash_val_index, key);
+                second_hash_result = new_find_second_open(hash_val_index, key);
                 
                 if(second_hash_result != -1)
                 {
@@ -142,7 +141,27 @@ class hashtable3{
         }
         return -1;
     }
+
+    int new_find_second_open(int last_index, string key){
+        
+        int sec_hash_val = second_hash(key);
+        int step;
+        int init_index = last_index;
+        int ind_to_search;
+        for(int i = 1; i < 100; i++){
+            step = i * sec_hash_val;
+            ind_to_search = (init_index + step) % size_total;
+            if(hash_array[ind_to_search] == "null"){
+                return ind_to_search; 
+            }
+        }
+        return -1;
+    }
     
+    // need to change this 
+    // i think u should just hash the index 
+    // legit take indexd and step + and mod it, this will be way easier 
+    // change paramter
     int second_hash(string key_to_hash){
 
         hash_cof = findlastprime(size_total);
@@ -206,7 +225,7 @@ class hashtable3{
                 return true;
             }
             else{
-                return second_search(hash_ind, key);
+                return new_second_search(hash_ind, key);
             }
 
         }
@@ -235,6 +254,22 @@ class hashtable3{
                 cur_ind = cur_ind + step;
             }
             if(hash_array[cur_ind] == key){
+                return true; 
+            }
+        }
+        return false;
+    }
+
+    bool new_second_search(int last_index, string key){
+        int sec_hash_val = second_hash(key);
+        int step;
+        int ind_to_search;
+        int init_index = last_index;
+
+        for(int i = 1; i < 100; i++){
+            step = i * sec_hash_val;
+            ind_to_search = (init_index + step) % size_total;
+            if(hash_array[ind_to_search] == key){
                 return true; 
             }
         }

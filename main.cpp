@@ -49,7 +49,7 @@ int main(int argc,  char **argv)
 
     dict_file.close();
 
-    hashtable1 first_hash(count_of_dict_words);
+    hashtable3 first_hash(count_of_dict_words);
 
     hashtable2 second_hash(count_of_dict_words);
 
@@ -126,7 +126,7 @@ int main(int argc,  char **argv)
     
     }
 
-
+    return 1;
 
      // now we start second hash, which is quad probe 
 
