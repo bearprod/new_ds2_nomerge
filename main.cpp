@@ -29,7 +29,7 @@ int main(int argc,  char **argv)
     duration<double, nano> hash2_add;
     duration<double, nano> hash2_search;
 
-    regex regex("[A-Za-z-]+"); // regex tp search for words and include hyphen
+    regex regex("[A-Za-z]+(-[A-Za-z]+)?"); // regex tp search for words and include hyphen
 
     string dict_file_name = argv[1];
 

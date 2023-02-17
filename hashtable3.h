@@ -48,6 +48,8 @@ class hashtable3{
 
         hash_cof = findlastprime(size_total);
 
+        cout << hash_cof << "this is hash coof" << endl;
+
         for(int i = 0; i < size_total; i++){
             hash_array[i] = "null";
         }
@@ -92,57 +94,82 @@ class hashtable3{
 
 
     void insert_key_at_index(string key, int hash_val_index){
-
-        if(hash_val_index >= 0 && hash_val_index < size_total)
-        {
-            if(hash_array[hash_val_index] == "null"){
+        int sec_hash = second_hash(key);
+        unsigned int new_index;
+        new_index = hash_val_index;
+        if(hash_array[hash_val_index] == "null"){
                 hash_array[hash_val_index] = key;
                 return;
         }
-            else{
-
-                int second_hash_result;
-                second_hash_result = actual_second_open(hash_val_index, key);
-                
-                if(second_hash_result != -1)
-                {
-                    hash_array[second_hash_result] = key;
-                }
-                else{
-
+        else{
+            for(int i = 0; i < size_total; i++){
+                new_index = (new_index + (i * sec_hash)) % size_total;
+                if(hash_array[new_index] == "null"){
+                    hash_array[new_index] = key;
                     return;
-                }
-            }
-        }
-        else {
-            throw out_of_range("in insert key call, hash func index out of bounds");
-        }
-    }
-   
+                }                
 
-    int actual_second_open(int index, string key){
+            }
+       }
+       return;
+    
+    }
+
+     bool new_search_for_hash_key_pair(string key, int hash_ind){
+        unsigned int sec_hash = second_hash(key);
+        unsigned int new_index;
+        new_index = hash_ind;
+        if(hash_array[hash_ind] == key){
+                return true;
+        }
+        else{
+            for(int i = 0; i < size_total; i++){
+                new_index = (new_index + (i * sec_hash)) % size_total;
+                if(hash_array[new_index] == key){
+                    return true;
+                }                
+
+            }
+            return false;
+       }
+       
+    }
+    
+   
+    // after a collision, call actual_second_open, find next open index using double hash * i as step
+    /*int actual_second_open(int index, string key){
         int step;
         int step_factor;
         int index_to_search;
         int init_index;
         init_index = index;
-        step_factor = second_hash(index);
+        step_factor = second_hash(key);
 
         for(int i = 1; i < size_total/5; i++){
             step = step_factor * i;
             index_to_search = (init_index + step_factor) % size_total;
             if(hash_array[index_to_search] == key){
-                return true; 
+                return index_to_search; 
             }
         }
-        return false;
-    }
+        return -1;
+    }*/
 
     
     
-    int second_hash(int index_to_hash){
+    unsigned int second_hash(string key){
 
-        return hash_cof - (index_to_hash % hash_cof); // def keep thsi q - mod shit 
+        unsigned int hash_val = 0;
+
+        unsigned int ret_val;
+
+        for (char ch: key){
+            hash_val = 37 * hash_val + ch;
+        }
+
+        ret_val = hash_cof - (hash_val % hash_cof);
+
+        return ret_val; // def keep thsi q - mod shit 
 
     }
 
@@ -158,7 +185,7 @@ class hashtable3{
            
             hash_of_key = hash_func(lower_key);
 
-            if(search_for_hash_key_pair(lower_key, hash_of_key)){
+            if(new_search_for_hash_key_pair(lower_key, hash_of_key)){
                 // cout << "found:" << lower_key << endl;
                 return;
             }
@@ -188,43 +215,6 @@ class hashtable3{
             }
         }
 
-    bool search_for_hash_key_pair(string key, int hash_ind){
-        if(hash_ind >= 0 && hash_ind < size_total)
-        {
-            if(hash_array[hash_ind] == key){
-                return true;
-            }
-            else{
-                return actual_second_search(hash_ind, key);
-            }
-
-        }
-        else{
-            throw out_of_range("hash func returned bad index");
-        }
-    }
-
-
-    // should work 
-    bool actual_second_search(int index, string key){
-        int step;
-        int step_factor;
-        int index_to_search;
-        int init_index;
-        init_index = index;
-        step_factor = second_hash(index);
-
-        for(int i = 1; i < size_total/5; i++){
-            step = step_factor * i;
-            index_to_search = (init_index + step_factor) % size_total;
-            if(hash_array[index_to_search] == key){
-                return true; 
-            }
-        }
-        return false;
-
-
-    }
 
     
 
