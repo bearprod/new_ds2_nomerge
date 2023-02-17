@@ -65,11 +65,13 @@ class hashtable3{
 
     void add_key(string key_to_add){
 
-        int hash_number = hash_func(key_to_add); 
+        int hash_number;
 
         string lower_key;
 
         lower_key = make_low(key_to_add);
+
+        hash_number = hash_func(lower_key);
         
         insert_key_at_index(lower_key, hash_number);
 
@@ -126,7 +128,7 @@ class hashtable3{
         init_index = index;
         step_factor = second_hash(index);
 
-        for(int i = 1; i < size_total; i++){
+        for(int i = 1; i < size_total/5; i++){
             step = step_factor * i;
             index_to_search = (init_index + step_factor) % size_total;
             if(hash_array[index_to_search] == key){
@@ -161,6 +163,7 @@ class hashtable3{
                 return;
             }
             else{
+                cout << "could not find " << search_key << endl;
                 misspelled_count = misspelled_count + 1;
                 // cout << "did not find: " << lower_key << endl;
                 return;
@@ -211,7 +214,7 @@ class hashtable3{
         init_index = index;
         step_factor = second_hash(index);
 
-        for(int i = 1; i < size_total; i++){
+        for(int i = 1; i < size_total/5; i++){
             step = step_factor * i;
             index_to_search = (init_index + step_factor) % size_total;
             if(hash_array[index_to_search] == key){
