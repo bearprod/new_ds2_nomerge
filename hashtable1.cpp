@@ -101,11 +101,6 @@ int hashtable1::hash_func(string key){
         return hash_val % size_total;
     }
 
-    // can prob delete this as well
-void hashtable1::print_index(int index){
-        hash_array[index].print();
-        return;
-    }
 
 void hashtable1::search(string search_key){
        

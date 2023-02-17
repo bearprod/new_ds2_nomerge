@@ -32,23 +32,16 @@ class hashtable3{
         if(isPrime(size_total) == true){
             hash_array = new string[size_total];
             
-            if(check_mode){
-                cout << "initial size fond to be prime, init array of size:" << size_total << endl;
-            }
         }
         else{
             size_total = findnextPrime(size_total);
 
             hash_array = new string[size_total];
             
-            if(check_mode){
-                cout << "found next prime number, init array of size:" << size_total << endl;
-            }
         }
 
         hash_cof = findlastprime(size_total);
 
-        cout << hash_cof << "this is hash coof" << endl;
 
         for(int i = 0; i < size_total; i++){
             hash_array[i] = "null";
@@ -135,27 +128,6 @@ class hashtable3{
        
     }
     
-   
-    // after a collision, call actual_second_open, find next open index using double hash * i as step
-    /*int actual_second_open(int index, string key){
-        int step;
-        int step_factor;
-        int index_to_search;
-        int init_index;
-        init_index = index;
-        step_factor = second_hash(key);
-
-        for(int i = 1; i < size_total/5; i++){
-            step = step_factor * i;
-            index_to_search = (init_index + step_factor) % size_total;
-            if(hash_array[index_to_search] == key){
-                return index_to_search; 
-            }
-        }
-        return -1;
-    }*/
-
-    
     
     unsigned int second_hash(string key){
 
@@ -186,13 +158,11 @@ class hashtable3{
             hash_of_key = hash_func(lower_key);
 
             if(new_search_for_hash_key_pair(lower_key, hash_of_key)){
-                // cout << "found:" << lower_key << endl;
                 return;
             }
             else{
-                cout << "could not find " << search_key << endl;
                 misspelled_count = misspelled_count + 1;
-                // cout << "did not find: " << lower_key << endl;
+    
                 return;
             }
         }

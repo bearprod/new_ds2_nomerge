@@ -29,6 +29,9 @@ int main(int argc,  char **argv)
     duration<double, nano> hash2_add;
     duration<double, nano> hash2_search;
 
+    duration<double, nano> hash3_add;
+    duration<double, nano> hash3_search;
+
     regex regex("[A-Za-z]+(-[A-Za-z]+)?"); // regex tp search for words and include hyphen
 
     string dict_file_name = argv[1];
@@ -49,9 +52,11 @@ int main(int argc,  char **argv)
 
     dict_file.close();
 
-    hashtable3 first_hash(count_of_dict_words);
+    hashtable1 first_hash(count_of_dict_words);
 
     hashtable2 second_hash(count_of_dict_words);
+
+    hashtable3 third_hash(count_of_dict_words);
 
     string dict_line;
 
@@ -126,7 +131,6 @@ int main(int argc,  char **argv)
     
     }
 
-    return 1;
 
      // now we start second hash, which is quad probe 
 
@@ -191,6 +195,72 @@ int main(int argc,  char **argv)
     cout << "time for hash2 search " << hash2_search.count() << " nanoseconds" << endl;
 
     cout << "number of misspelled words for hash2: " << second_hash.misspelled_count << endl;
+    
+    }
+
+    // now start hash 3 add and search
+
+    auto hash3_add_start = steady_clock::now();
+
+    dict_file.open(dict_file_name);
+    if(!dict_file.eof()){
+
+        while(getline(dict_file, dict_line)){
+
+            smatch dict_result;
+            
+            for (sregex_iterator iter(dict_line.begin(), dict_line.end(), regex); iter != sregex_iterator(); ++iter){
+                    
+            
+                    dict_result = *iter;
+
+                    third_hash.add_key(dict_result.str());  
+
+            }
+
+        }
+    }
+
+    dict_file.close();
+
+    auto hash3_add_stop = steady_clock::now();
+
+    hash3_add = hash3_add_stop - hash3_add_start; 
+
+
+    auto hash3_search_start = steady_clock::now();
+
+    input_file.open(input_file_name);
+
+    if(!input_file.eof())
+    {
+        string reg_line;
+
+        while(getline(input_file, reg_line)){
+
+            smatch result;
+
+            int reg_test;
+        
+            for (sregex_iterator iter(reg_line.begin(), reg_line.end(), regex); iter != sregex_iterator(); ++iter){
+                    
+                    result = *iter;
+
+                    third_hash.search(result.str());
+
+            }
+        }
+    input_file.close();
+
+    auto hash3_search_stop = steady_clock::now();
+    
+    hash3_search = hash3_search_stop - hash3_search_start; 
+
+    cout << "time for hash3 add " << hash3_add.count() << " nanoseconds" << endl;
+
+    cout << "time for hash3 search " << hash3_search.count() << " nanoseconds" << endl;
+
+    cout << "number of misspelled words for hash3: " << third_hash.misspelled_count << endl;
     
     }
 

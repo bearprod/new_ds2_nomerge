@@ -47,9 +47,6 @@ class hashtable1{
 
     int hash_func(string key);
 
-    // can prob delete this as well
-    void print_index(int index);
-
     void search(string search_key);
 
     string make_low(string key);

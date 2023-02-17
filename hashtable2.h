@@ -27,23 +27,13 @@ class hashtable2{
 
     int hash_func(string key);
 
-
-
     void insert_key_at_index(string key, int hash_val_index);
 
-    int quad_probe(int last_index);
-
-    
     void search(string search_key);
 
     string make_low(string key);
 
     bool search_for_hash_key_pair(string key, int hash_ind);
-
-
-    int quad_search(string key, int last_ind);
-    
-
 
     bool isPrime(int number);
 
